@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+    "name": "Nome da Extensão",
+    "version": "1.0",
+    "description": "Senha de acesso suporte",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "persistent": false,
+        "scripts": [
+            "background_script.js"
+        ]
+    },
+    "permissions": [
+        "notifications",
+        "tabs",
+        "identity",
+        "http://*/*",
+        "https://*/*"
+    ]
+}
