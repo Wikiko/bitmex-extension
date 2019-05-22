@@ -8,7 +8,7 @@ function XBTNotification() {
     }
 
     function priceComparatorPercent(previousPrice, currentPrice) {
-        return (((currentPrice * 100) / previousPrice) - 100);
+        return parseFloat((((currentPrice * 100) / previousPrice) - 100).toFixed(4));
     }
 
     function run(time) {
@@ -24,7 +24,7 @@ function XBTNotification() {
                     console.log('currentPrice', currentPrice);
                     const percentageVariation = priceComparatorPercent(previousPrice, currentPrice);
                     if (percentageVariation >= 0.10 || percentageVariation <= -0.10) {
-                        new window.Notification(`Variação do XBT: ${percentageVariation}`);
+                        new window.Notification(`Preço Atual: ${currentPrice}, Variação do XBT: ${percentageVariation}`);
                     }
                     previousPrice = currentPrice; // after used current turn previous.
                 }, time);
@@ -45,4 +45,14 @@ function XBTNotification() {
 
 const xbt = XBTNotification();
 
-xbt.run(3000);
+chrome.runtime.onMessage.addListener(result => {
+    console.log('message:', result);
+    switch (result) {
+        case 'start':
+            xbt.run(3000);
+            break;
+        case 'stop':
+            xbt.stop();
+            break;
+    }
+});
