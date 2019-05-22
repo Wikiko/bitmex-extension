@@ -24,7 +24,7 @@ function XBTNotification() {
                     console.log('currentPrice', currentPrice);
                     const percentageVariation = priceComparatorPercent(previousPrice, currentPrice);
                     if (percentageVariation >= 0.10 || percentageVariation <= -0.10) {
-                        const exclamation = '!'.repeat(percentageVariation * 10);
+                        const exclamation = '!'.repeat(Math.abs(percentageVariation) * 10);
                         chrome.runtime.sendMessage({
                             type: 'notification',
                             content: {
