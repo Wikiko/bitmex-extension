@@ -1,13 +1,14 @@
 {
     "manifest_version": 2,
-    "name": "Nome da Extensão",
+    "name": "Bitmex do Will",
     "version": "1.0",
-    "description": "Senha de acesso suporte",
+    "description": "Extensão para auxiliar o monitoramento e movimentação do bitcoin.",
     "browser_action": {
         "default_icon": "icon.png",
         "default_popup": "popup.html"
     },
     "permissions": [
+        "notifications",
         "tabs",
         "identity",
         "http://*/*",

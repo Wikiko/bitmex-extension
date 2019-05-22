@@ -13,7 +13,7 @@ function XBTNotification() {
 
     function run(time) {
         stop();
-        return window.Notification.requestPermission()
+        return Notification.requestPermission()
             .then(permission => {
                 if (permission !== 'granted') {
                     return alert('Sem permissão não dá pra notificar...');
@@ -24,7 +24,16 @@ function XBTNotification() {
                     console.log('currentPrice', currentPrice);
                     const percentageVariation = priceComparatorPercent(previousPrice, currentPrice);
                     if (percentageVariation >= 0.10 || percentageVariation <= -0.10) {
-                        new window.Notification(`Preço Atual: ${currentPrice}, Variação do XBT: ${percentageVariation}`);
+                        const exclamation = '!'.repeat(percentageVariation * 10);
+                        chrome.runtime.sendMessage({
+                            type: 'notification',
+                            content: {
+                                type: 'basic',
+                                title: `Variação do XBT: ${percentageVariation}${exclamation}`,
+                                message: `Preço Atual: ${currentPrice}`,
+                                iconUrl: 'https://image.flaticon.com/icons/png/128/139/139775.png'
+                            }
+                        });
                     }
                     previousPrice = currentPrice; // after used current turn previous.
                 }, time);
