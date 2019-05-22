@@ -24,12 +24,11 @@ function XBTNotification() {
                     console.log('currentPrice', currentPrice);
                     const percentageVariation = priceComparatorPercent(previousPrice, currentPrice);
                     if (percentageVariation >= 0.10 || percentageVariation <= -0.10) {
-                        const exclamation = '!'.repeat(Math.abs(percentageVariation) * 10);
                         chrome.runtime.sendMessage({
                             type: 'notification',
                             content: {
                                 type: 'basic',
-                                title: `Variação do XBT: ${percentageVariation}${exclamation}`,
+                                title: `Variação do XBT: ${percentageVariation}`,
                                 message: `Preço Atual: ${currentPrice}`,
                                 iconUrl: 'https://image.flaticon.com/icons/png/128/139/139775.png'
                             }
