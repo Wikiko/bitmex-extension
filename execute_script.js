@@ -11,21 +11,20 @@ function XBTNotification() {
         return parseFloat((((currentPrice * 100) / previousPrice) - 100).toFixed(4));
     }
 
-    function criteriaSelector(selectorCss, criteriaFn) {
-        const elements = [...document.querySelectorAll(selectorCss)];
-        return elements.filter(criteriaFn);
+    function criteriaSelector(selector, criteriaFn){
+        return [...document.querySelectorAll(selector)].filter(criteriaFn);
     }
 
-    function run(time) {
+    function run(time, extensionId) {
         stop();
 
-        // criteriaSelector('span', span => span.textContent.match(/^(\d*\,\d*)\s(XBT)$/))
-        //     .forEach(span => {
-        //         const spanTextContent = span.textContent;
-        //         const xbtSpanPrice = parseFloat(spanTextContent.split(' ')[0].replace(',', '.'));
-        //         span.addEventListener('mouseover', () => span.textContent = `${(getCurrentPrice() * xbtSpanPrice).toFixed(2)} USD`);
-        //         span.addEventListener('mouseout', () => span.textContent = spanTextContent);
-        //     });
+        criteriaSelector('span', span => span.textContent.match(/^(\d*\,\d*)\s(XBT)$/))
+            .forEach(span => {
+                const spanTextContent = span.textContent;
+                const xbtSpanPrice = parseFloat(spanTextContent.split(' ')[0].replace(',', '.'));
+                span.addEventListener('mouseover', () => span.textContent = `${(getCurrentPrice() * xbtSpanPrice).toFixed(2)} USD`);
+                span.addEventListener('mouseout', () => span.textContent = spanTextContent);
+            });
 
         return Notification.requestPermission()
             .then(permission => {
@@ -38,14 +37,9 @@ function XBTNotification() {
                     console.log('currentPrice', currentPrice);
                     const percentageVariation = priceComparatorPercent(previousPrice, currentPrice);
                     if (percentageVariation >= 0.10 || percentageVariation <= -0.10) {
-                        chrome.runtime.sendMessage({
-                            type: 'notification',
-                            content: {
-                                type: 'basic',
-                                title: `Variação do XBT: ${percentageVariation}`,
-                                message: `Preço Atual: ${currentPrice}`,
-                                iconUrl: 'https://image.flaticon.com/icons/png/128/139/139775.png'
-                            }
+                        new Notification(`Variação do XBT: ${percentageVariation}`, {
+                            body: `Preço Atual: ${currentPrice}`,
+                            icon: 'https://image.flaticon.com/icons/png/128/139/139775.png'
                         });
                     }
                     previousPrice = currentPrice; // after used current turn previous.
@@ -69,9 +63,9 @@ const xbt = XBTNotification();
 
 chrome.runtime.onMessage.addListener(result => {
     console.log('message:', result);
-    switch (result) {
+    switch (result.message) {
         case 'start':
-            xbt.run(3000);
+            xbt.run(3000, result.extensionId);
             break;
         case 'stop':
             xbt.stop();

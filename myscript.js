@@ -13,15 +13,22 @@ function uuidv4() {
     )
 }
 
+function makeMessage(message){
+    return {
+        message,
+        extensionId: chrome.runtime.id
+    };
+}
+
 window.addEventListener('load', () => {
-    const notificationAudio = new Audio('https://s3-sa-east-1.amazonaws.com/bitmexsgd/alert1.wav');
-    chrome.runtime.onMessage.addListener(message => {
-        switch (message.type) {
-            case 'notification':
-                chrome.notifications.create(uuidv4(), message.content);
-                break;
-        }
-    });
+    // chrome.runtime.onMessage.addListener(message => {
+    //     console.log(message);
+    //     switch (message.type) {
+    //         case 'notification':
+    //             chrome.notifications.create(uuidv4(), message.content);
+    //             break;
+    //     }
+    // });
 
     document.getElementById('start').addEventListener('click', () => {
         getBitmexTab()
@@ -33,7 +40,7 @@ window.addEventListener('load', () => {
                             chrome.tabs.executeScript(bitmexTab.id, {
                                 file: 'execute_script.js'
                             }, () => {
-                                chrome.tabs.sendMessage(bitmexTab.id, 'start');
+                                chrome.tabs.sendMessage(bitmexTab.id, makeMessage('start'));
                             });
                         }
                     });
@@ -44,7 +51,7 @@ window.addEventListener('load', () => {
     document.getElementById('stop').addEventListener('click', () => {
         getBitmexTab()
             .then(bitmexTab => {
-                chrome.tabs.sendMessage(bitmexTab.id, 'stop');
+                chrome.tabs.sendMessage(bitmexTab.id, makeMessage('stop'));
             });
     });
 });
