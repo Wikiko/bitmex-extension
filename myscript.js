@@ -1,5 +1,5 @@
 function getBitmexTab() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         chrome.tabs.getAllInWindow(tabs => {
             const bitmexTab = tabs.filter(tab => tab.url.includes('bitmex.com/app/trade/'))[0];
             return bitmexTab !== undefined ? resolve(bitmexTab) : reject();
