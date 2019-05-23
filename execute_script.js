@@ -19,6 +19,8 @@ function XBTNotification() {
                     return alert('Sem permissão não dá pra notificar...');
                 }
                 previousPrice = getCurrentPrice(); // for first call...
+                const textToSpeak = new SpeechSynthesisUtterance('Bitcoin toasty');
+                textToSpeak.rate = 3;
                 intervalId = setInterval(() => {
                     const currentPrice = getCurrentPrice();
                     console.log('currentPrice', currentPrice);
@@ -33,6 +35,7 @@ function XBTNotification() {
                                 iconUrl: 'https://image.flaticon.com/icons/png/128/139/139775.png'
                             }
                         });
+                        speechSynthesis.speak(textToSpeak);
                     }
                     previousPrice = currentPrice; // after used current turn previous.
                 }, time);

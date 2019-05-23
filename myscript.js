@@ -14,13 +14,11 @@ function uuidv4() {
 }
 
 window.addEventListener('load', () => {
-
     const notificationAudio = new Audio('https://s3-sa-east-1.amazonaws.com/bitmexsgd/alert1.wav');
-
     chrome.runtime.onMessage.addListener(message => {
         switch (message.type) {
             case 'notification':
-                chrome.notifications.create(uuidv4(), message.content, () => notificationAudio.play());
+                chrome.notifications.create(uuidv4(), message.content);
                 break;
         }
     });
