@@ -19,13 +19,13 @@ function XBTNotification() {
     function run(time) {
         stop();
 
-        criteriaSelector('span', span => span.textContent.match(/^(\d*\,\d*)\s(XBT)$/))
-            .forEach(span => {
-                const spanTextContent = span.textContent;
-                const xbtSpanPrice = parseFloat(spanTextContent.split(' ')[0].replace(',', '.'));
-                span.addEventListener('mouseover', () => span.textContent = `${(getCurrentPrice() * xbtSpanPrice).toFixed(2)} USD`);
-                span.addEventListener('mouseout', () => span.textContent = spanTextContent);
-            });
+        // criteriaSelector('span', span => span.textContent.match(/^(\d*\,\d*)\s(XBT)$/))
+        //     .forEach(span => {
+        //         const spanTextContent = span.textContent;
+        //         const xbtSpanPrice = parseFloat(spanTextContent.split(' ')[0].replace(',', '.'));
+        //         span.addEventListener('mouseover', () => span.textContent = `${(getCurrentPrice() * xbtSpanPrice).toFixed(2)} USD`);
+        //         span.addEventListener('mouseout', () => span.textContent = spanTextContent);
+        //     });
 
         return Notification.requestPermission()
             .then(permission => {
